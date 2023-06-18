@@ -27,12 +27,12 @@ def handle_message(message):
             search_text = "0" + search_text
             
     # Ad, Soyad, Adres, gsmtel_no, ikinci_adi, muhtarlik_adi sütunlarını içeren verileri filtrele
-    filtered_df = df[(df['adi'].str.lower() == search_text) |
-                     (df['soyadi'].str.lower() == search_text) |
-                     ((df['gsmtel_no'].astype(str).str[-10:] == search_text[-10:]) | (df['gsmtel_no'].astype(str).str[-9:] == search_text[-10:])) |
-                     ((df['adi'] + ' ' + df['soyadi']).str.lower() == search_text) |
-                     (df['ikinci_adi'].str.lower() == search_text) |
-                     (df['muhtarlik_adi'].str.lower() == search_text)]
+    filtered_df = df[(normalize_text(df['adi']).casefold() == search_text) |
+                    (normalize_text(df['soyadi']).casefold() == search_text) |
+                    ((df['gsmtel_no'].astype(str).str[-10:] == search_text[-10:]) | (df['gsmtel_no'].astype(str).str[-9:] == search_text[-10:])) |
+                    (normalize_text((df['adi'] + ' ' + df['soyadi'])).casefold() == search_text) |
+                    (normalize_text(df['ikinci_adi']).casefold() == search_text) |
+                    (normalize_text(df['muhtarlik_adi']).casefold() == search_text)]
 
     if not filtered_df.empty:
         # Sonuçları soyisim (soyadi) sütununa göre alfabetik sıraya göre sırala
