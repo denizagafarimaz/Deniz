@@ -19,7 +19,7 @@ def normalize_text(text):
 #            if normalize_text(target).casefold() in normalize_text(data).casefold():
 #                filteredData.append(data)
 #        filteredRow.append(filterData)
-#    return filteredDataFrame   -> TODO: Burada yapılacak olan olay
+#    return filteredDataFrame   -> TODO: Burada yapılacak olan olay filtrelenmiş veriyi dataframe'e çevirip filtered_df olarak döndürmek
 
 # Mesajları işleme fonksiyonu
 @bot.message_handler(func=lambda message: True)
