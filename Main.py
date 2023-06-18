@@ -1,5 +1,6 @@
 import pandas as pd
 import telebot
+import unicodedata
 
 # Veri çerçevesini yükle
 df = pd.read_excel('ankara mamak (2).xlsx')
@@ -7,10 +8,14 @@ df = pd.read_excel('ankara mamak (2).xlsx')
 # Telegram botunu oluştur
 bot = telebot.TeleBot("6058174867:AAGSdPL4V9mHb4zmr_W3I8_kNa4jmcHLdqU")
 
+# Türkçe ve ingilizce karakterlerin dönüşümünü sağlayan metot
+def normalize_text(text):
+    return ''.join(c for c in unicodedata.normalize('NFKD', text) if not unicodedata.combining(c))
+
 # Mesajları işleme fonksiyonu
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
-    search_text = message.text.lower()  # Arama metnini küçük harfe dönüştür
+    search_text = normalize_text(message.text)  # Arama Türkçe karakter ve büyük-küçük harf bağımsız 'normalize' eder
 
     # Başında 0 kontrolü
     if search_text[:1] == "0":
@@ -20,7 +25,7 @@ def handle_message(message):
         else:
             # Başında 0 olan ve 10 haneli numara için başına 0 ekle
             search_text = "0" + search_text
-
+            
     # Ad, Soyad, Adres, gsmtel_no, ikinci_adi, muhtarlik_adi sütunlarını içeren verileri filtrele
     filtered_df = df[(df['adi'].str.lower() == search_text) |
                      (df['soyadi'].str.lower() == search_text) |
