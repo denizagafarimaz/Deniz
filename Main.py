@@ -15,7 +15,7 @@ def normalize_text(text):
 # Mesajları işleme fonksiyonu
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
-    search_text = normalize_text(message.text)  # Arama Türkçe karakter ve büyük-küçük harf bağımsız 'normalize' eder
+    search_text = normalize_text(message.text).casefold()  # Arama Türkçe karakter ve büyük-küçük harf bağımsız 'normalize' eder
 
     # Başında 0 kontrolü
     if search_text[:1] == "0":
