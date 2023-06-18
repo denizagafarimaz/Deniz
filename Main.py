@@ -11,6 +11,15 @@ bot = telebot.TeleBot("6058174867:AAGSdPL4V9mHb4zmr_W3I8_kNa4jmcHLdqU")
 # Türkçe ve ingilizce karakterlerin dönüşümünü sağlayan metot
 def normalize_text(text):
     return ''.join(c for c in unicodedata.normalize('NFKD', text) if not unicodedata.combining(c))
+# def search(target, dataFrame):
+#    filteredRow = []
+#    filteredData = []
+#    for dataRow in dataFrame:
+#        for data in dataRow:
+#            if normalize_text(target).casefold() in normalize_text(data).casefold():
+#                filteredData.append(data)
+#        filteredRow.append(filterData)
+#    return filteredDataFrame   -> TODO: Burada yapılacak olan olay
 
 # Mesajları işleme fonksiyonu
 @bot.message_handler(func=lambda message: True)
@@ -27,7 +36,7 @@ def handle_message(message):
             search_text = "0" + search_text
             
     # Ad, Soyad, Adres, gsmtel_no, ikinci_adi, muhtarlik_adi sütunlarını içeren verileri filtrele
-    filtered_df = df[(normalize_text(df['adi']).casefold() == search_text) |
+    filtered_df = df[(df['adi'] == search_text) |
                     (normalize_text(df['soyadi']).casefold() == search_text) |
                     ((df['gsmtel_no'].astype(str).str[-10:] == search_text[-10:]) | (df['gsmtel_no'].astype(str).str[-9:] == search_text[-10:])) |
                     (normalize_text((df['adi'] + ' ' + df['soyadi'])).casefold() == search_text) |
